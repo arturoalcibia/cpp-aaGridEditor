@@ -24,8 +24,6 @@ AANode::AANode(int inPosX, int inPosY, int inGridSize) : QGraphicsItem() {
     hCost = 0;
     fCost = 0;
 
-    qDebug("hoi is %d", gridSize);
-
     parentNode = nullptr;
 
     currentState = STATES::BLANK;
@@ -122,7 +120,7 @@ void AANode::switchWallState() {
         this->setCurrentState(STATES::BLANK);
 }
 
-void AANode::switchGoalPointState() {
+void AANode::switchGoalNode() {
     if (this->getCurrentState() == STATES::GOAL) {
         this->setCurrentState(STATES::BLANK);
         return;
@@ -139,4 +137,18 @@ void AANode::reset() {
     this->setGCost(0);
     this->setHCost(0);
     this->parentNode = nullptr;
+}
+
+size_t AANode::getHashCode() const{
+    std::string hashString = std::to_string(posX) + std::to_string(posY);
+    return (size_t)std::stoi( hashString );
+}
+
+bool AANode::operator==(const AANode &inOtherNode) const{
+    return this->getHashCode() == inOtherNode.getHashCode();
+}
+
+
+size_t _NodeHasher::operator()(const AANode& inOtherNode) const{
+    return inOtherNode.getHashCode();
 }

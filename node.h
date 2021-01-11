@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 
-#include <QtGui/QColor>
+#include <QtGui>
 #include <QtWidgets/QGraphicsItem>
 
 const enum STATES {
@@ -32,6 +32,8 @@ public:
     // constructor
     AANode(int inPosX, int inPosY, int inGridSize);
 
+    bool operator==(const AANode& inOtherNode) const;
+
     // TODO: order declaring
     int posX;
     int posY;
@@ -49,6 +51,8 @@ public:
 
     int distanceTo(AANode& otherAANode);
 
+    size_t getHashCode() const;
+
     int getFCost();
 
     int getGCost();
@@ -61,7 +65,7 @@ public:
 
     void switchWallState();
 
-    void switchGoalPointState();
+    void switchGoalNode();
 
     void setToExplored();
 
@@ -83,4 +87,9 @@ private:
     QBrush qBrush;
     QPen qPen;
 
+};
+
+class _NodeHasher{
+public:
+    size_t operator()(const AANode& inOtherNode) const;
 };
