@@ -145,7 +145,7 @@ size_t AANode::getHashCode() const{
 }
 
 bool AANode::operator==(const AANode &inOtherNode) const{
-    return this->getHashCode() == inOtherNode.getHashCode();
+    return getHashCode() == inOtherNode.getHashCode();
 }
 
 

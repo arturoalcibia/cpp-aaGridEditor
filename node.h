@@ -81,9 +81,6 @@ private:
     int gCost;
     int hCost;
     int fCost;
-
-    //todo: check if thats correct / if it needs pointers or being here.
-    //todo: change to private
     QBrush qBrush;
     QPen qPen;
 

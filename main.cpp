@@ -1,7 +1,7 @@
 #include <QtWidgets>
 #include <QDebug>
 
-#include "view.h"
+#include "grid.h"
 
 
 int main(int argc, char *argv[])
@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-    AAView aaView;
+    AAGrid aaView;
 
     aaView.show();
     return a.exec();
