@@ -25,6 +25,8 @@ const QColor BORDER_COLOR = QColor(70, 70, 70, 255);
 
 const QColor TEXT_COLOR = QColor(0, 200, 200, 255);
 
+const STATES NON_EXPLORING_STATES[2] = { STATES::WALL , STATES::GOAL };
+
 class AANode: public QGraphicsItem {
 
 public:
@@ -32,7 +34,7 @@ public:
     // constructor
     AANode(int inPosX, int inPosY, int inGridSize);
 
-    bool operator==(const AANode& inOtherNode) const;
+    bool operator==(const AANode* inOtherNode) const;
 
     // TODO: order declaring
     int posX;
@@ -40,8 +42,7 @@ public:
     int gridSize;
 
     AANode* parentNode;
-
-    STATES NON_EXPLORING_STATES[2] = { STATES::WALL , STATES::GOAL };
+    std::vector<AANode*> neighbourNodes;
 
     QRectF boundingRect() const;
 
@@ -49,7 +50,7 @@ public:
 
     void setCurrentState(STATES newState);
 
-    int distanceTo(AANode& otherAANode);
+    int distanceTo(AANode* otherAANode);
 
     size_t getHashCode() const;
 

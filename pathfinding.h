@@ -1,11 +1,5 @@
-/*
 #pragma once
 
+#include "node.h"
 
-class AAPathfinding{
-
-public:
-    explicit AAPathfinding( AAGrid* inAAGrid );
-    AAGrid* aaGrid;
-};
-*/
+void findPath(AANode* inStartNode, AANode* inEndNode);

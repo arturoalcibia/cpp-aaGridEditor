@@ -1,18 +1,9 @@
-//
-// Created by Arturo on 2021-01-08.
-//
+//todo: be consistent with this->
 
 #include <QtCore>
 #include <QtGui>
 
 #include "node.h"
-
-/*
-AANode& createAANode(int posX, int posY, int gridSize)
-{
-	return AANode(posX, posY, gridSize);
-}
-*/
 
 AANode::AANode(int inPosX, int inPosY, int inGridSize) : QGraphicsItem() {
 
@@ -46,9 +37,9 @@ QRectF AANode::boundingRect() const
     return QRectF(0, 0, gridSize, gridSize);
 }
 
-int AANode::distanceTo(AANode& otherAANode){
-    int xDistance = abs(this->posX - otherAANode.posX);
-    int yDistance = abs(this->posY - otherAANode.posY);
+int AANode::distanceTo(AANode* otherAANode){
+    int xDistance = abs(this->posX - otherAANode->posX);
+    int yDistance = abs(this->posY - otherAANode->posY);
 
     if (xDistance > yDistance)
         return (int)( 0.14 * yDistance + ( ( xDistance - yDistance ) * 0.10 ) );
@@ -84,11 +75,11 @@ int AANode::getHCost()
     return hCost;
 }
 
+//todo: mark as private.
 void AANode::setCurrentState(STATES newState)
 {
     currentState = newState;
-
-    AANode::update();
+    update();
 }
 
 void AANode::setGCost(int newGCost)
@@ -104,7 +95,7 @@ void AANode::setHCost(int newHCost)
 void AANode::setToExplored() {
     if (std::find(std::begin(NON_EXPLORING_STATES ),
                   std::end(NON_EXPLORING_STATES),
-                  currentState ) != std::end(NON_EXPLORING_STATES))
+                  currentState ) == std::end(NON_EXPLORING_STATES))
         this->setCurrentState(STATES::EXPLORED);
 }
 
@@ -131,12 +122,12 @@ void AANode::switchGoalNode() {
 void AANode::reset() {
     if (std::find(std::begin(NON_EXPLORING_STATES ),
                   std::end(NON_EXPLORING_STATES),
-                  this->getCurrentState() ) != std::end(NON_EXPLORING_STATES))
+                  this->getCurrentState() ) == std::end(NON_EXPLORING_STATES))
         this->setCurrentState(STATES::BLANK);
 
-    this->setGCost(0);
-    this->setHCost(0);
-    this->parentNode = nullptr;
+    setGCost(0);
+    setHCost(0);
+    parentNode = nullptr;
 }
 
 size_t AANode::getHashCode() const{
@@ -144,8 +135,8 @@ size_t AANode::getHashCode() const{
     return (size_t)std::stoi( hashString );
 }
 
-bool AANode::operator==(const AANode &inOtherNode) const{
-    return getHashCode() == inOtherNode.getHashCode();
+bool AANode::operator==(const AANode *inOtherNode) const{
+    return getHashCode() == inOtherNode->getHashCode();
 }
 
 

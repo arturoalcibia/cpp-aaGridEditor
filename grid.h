@@ -7,7 +7,7 @@
 //todo: define them in the cpp ?
 const int WIDTH = 1280;
 const int HEIGHT = 720;
-const int NODE_SIZE = 80;
+const int NODE_SIZE = 50;
 
 class AAGrid : public QGraphicsView {
 
@@ -20,15 +20,13 @@ public:
 
     explicit AAGrid();
 
-    //AAPathfinding* aaPathfinding;
-
     void resetNodes();
 
     QGraphicsScene* currentScene;
     std::unordered_map<size_t, AANode*> hashesNodeMapping;
     std::vector<AANode*> goalNodes;
     void setGoalNode(AANode *inNode);
-    std::vector<AANode*> getNeighbours(AANode* inNode);
+    void setNeighbours(AANode* inNode);
 
     void createNode(int inPosX, int inPosY, int inGridSize);
 

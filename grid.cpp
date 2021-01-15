@@ -6,6 +6,7 @@
 #include <QtWidgets>
 
 #include "grid.h"
+#include "pathfinding.h"
 
 //todo: private aaaand declared on the header.
 int DEFAULT_MOUSE_STATE = 0;
@@ -35,8 +36,9 @@ AAGrid::AAGrid() {
         }
     }
 
-    //aaPathfinding = new AAPathfinding;
-
+    // Once all nodes are creater we iterate over them to assign their neighbours.
+    for (auto i : hashesNodeMapping)
+        setNeighbours(i.second);
 };
 
 void AAGrid::createNode(int inPosX, int inPosY, int inGridSize)
@@ -53,21 +55,16 @@ void AAGrid::setGoalNode(AANode *inNode) {
 
     inNode->switchGoalNode();
 
-
-    if (goalNodes.size() == 2)
-    {
+    if (goalNodes.size() == 2){
         AANode* nodeToRemove = goalNodes.at( 0 );
         nodeToRemove->setCurrentState( STATES::BLANK );
         goalNodes.erase( goalNodes.begin() + 0 );
     }
 
     goalNodes.push_back(inNode);
-
-    getNeighbours(inNode);
-
 }
 
-std::vector<AANode*> AAGrid::getNeighbours(AANode* inNode) {
+void AAGrid::setNeighbours(AANode* inNode) {
 
     std::vector<AANode*> neighbourNodes;
 
@@ -93,7 +90,9 @@ std::vector<AANode*> AAGrid::getNeighbours(AANode* inNode) {
             neighbourNodes.push_back(neighbourNode);
         }
     }
-    return neighbourNodes;
+
+    inNode->neighbourNodes = neighbourNodes;
+
 }
 
 void AAGrid::mousePressEvent(QMouseEvent *event) {
@@ -160,5 +159,11 @@ void AAGrid::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_Control)
     {
         resetNodes();
+    }
+
+    if (event->key() == Qt::Key_Shift)
+    {
+        if (goalNodes.size() == 2)
+            findPath(goalNodes.at(0), goalNodes.at(1));
     }
 }
