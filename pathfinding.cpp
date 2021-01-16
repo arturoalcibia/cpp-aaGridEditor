@@ -6,6 +6,8 @@
 
 #include "node.h"
 
+//todo: preallocate size on closed/openNodes
+
 void findPath(AANode* inStartNode, AANode* inEndNode) {
 
     //todo: move to header ?
@@ -25,14 +27,12 @@ void findPath(AANode* inStartNode, AANode* inEndNode) {
         for (std::size_t i = 0; i < openNodes.size(); ++i) {
             AANode *newNode = openNodes[i];
 
-            if (newNode == currentNode)
-                continue;
-
-            if (newNode->getFCost() <= currentNode->getFCost())
-                if (newNode->getHCost() <= currentNode->getHCost())
-                    currentNode = newNode;
-                    //todo: can be replaced w iterator.
-                    currentIndex = i;
+            //todo: can be replaced w iterator.
+            if ( newNode->getFCost() <= currentNode->getFCost() || newNode->getHCost() <= currentNode->getHCost() )
+            {
+                currentNode = newNode;
+                currentIndex = i;
+            }
         }
 
         openNodes.erase(openNodes.begin() + currentIndex);
@@ -41,7 +41,7 @@ void findPath(AANode* inStartNode, AANode* inEndNode) {
         if (currentNode == endNode) {
             AANode* nextNode = endNode->parentNode;
 
-            while (nextNode != nullptr)
+            while (nextNode != NULL)
             {
                 nextNode->setToPath();
                 nextNode = nextNode->parentNode;
@@ -49,12 +49,9 @@ void findPath(AANode* inStartNode, AANode* inEndNode) {
             return;
         }
 
-        //todo: store in pointer or reference ?
         for(std::size_t i = 0; i < currentNode->neighbourNodes.size(); ++i) {
 
             AANode* neighbourNode = currentNode->neighbourNodes[i];
-
-            bool hoi = neighbourNode->getCurrentState() == STATES::WALL;
 
             if (neighbourNode->getCurrentState() == STATES::WALL)
                 continue;
