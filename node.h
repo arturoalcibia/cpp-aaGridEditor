@@ -1,11 +1,12 @@
-#pragma once
+#ifndef INCLUDE_NODE
+#define INCLUDE_NODE
 
 #include <unordered_map>
 
 #include <QtGui>
 #include <QtWidgets/QGraphicsItem>
 
-const enum STATES {
+enum STATES {
     BLANK,
     WALL,
     GOAL,
@@ -91,3 +92,5 @@ class _NodeHasher{
 public:
     size_t operator()(const AANode& inOtherNode) const;
 };
+
+#endif

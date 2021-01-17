@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INCLUDE_GRID
+#define INCLUDE_GRID
 
 #include <QtWidgets>
 
@@ -36,3 +37,5 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
     void keyPressEvent(QKeyEvent *event) override;
 };
+
+#endif

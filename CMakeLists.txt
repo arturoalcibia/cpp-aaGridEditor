@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(cpp_aaGridEditor)
 
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_PREFIX_PATH "C:/Qt/5.15.2/msvc2019_64")
+set(CMAKE_PREFIX_PATH "C:/Qt/5.15.2/mingw81_64")
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
