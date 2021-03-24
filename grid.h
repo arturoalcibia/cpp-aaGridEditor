@@ -24,7 +24,7 @@ public:
     void resetNodes();
 
     QGraphicsScene* currentScene;
-    std::unordered_map<size_t, AANode*> hashesNodeMapping;
+    std::unordered_map<std::string, AANode*> hashesNodeMapping;
     std::vector<AANode*> goalNodes;
     void setGoalNode(AANode *inNode);
     void setNeighbours(AANode* inNode);

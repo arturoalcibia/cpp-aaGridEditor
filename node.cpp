@@ -1,5 +1,8 @@
 //todo: be consistent with this->
 
+#include <iostream>
+#include<string>
+
 #include <QtCore>
 #include <QtGui>
 
@@ -37,9 +40,9 @@ QRectF AANode::boundingRect() const
     return QRectF(0, 0, gridSize, gridSize);
 }
 
-int AANode::distanceTo(AANode* otherAANode){
-    int xDistance = abs(this->posX - otherAANode->posX);
-    int yDistance = abs(this->posY - otherAANode->posY);
+int AANode::distanceTo(AANode& otherAANode){
+    int xDistance = abs(this->posX - otherAANode.posX);
+    int yDistance = abs(this->posY - otherAANode.posY);
 
     if (xDistance > yDistance)
         return (int)( 0.14 * yDistance + ( ( xDistance - yDistance ) * 0.10 ) );
@@ -130,16 +133,30 @@ void AANode::reset() {
     parentNode = nullptr;
 }
 
-size_t AANode::getHashCode() const{
-    std::string hashString = std::to_string(posX) + std::to_string(posY);
-    return (size_t)std::stoi( hashString );
+std::string AANode::hashCode() {
+    std::string hashString;
+
+    char xStr[7];
+    snprintf (xStr, 7, "%06d", posX);
+    hashString += xStr;
+
+    char zStr[7];
+    snprintf (zStr, 7, "%06d", posY);
+    hashString += zStr;
+
+    return hashString;
 }
 
-bool AANode::operator==(const AANode *inOtherNode) const{
-    return getHashCode() == inOtherNode->getHashCode();
-}
+std::string AANode::hashCode(int inPosX, int inPosY) {
+    std::string hashString;
 
+    char xStr[7];
+    snprintf (xStr, 7, "%06d", inPosX);
+    hashString += xStr;
 
-size_t _NodeHasher::operator()(const AANode& inOtherNode) const{
-    return inOtherNode.getHashCode();
+    char zStr[7];
+    snprintf (zStr, 7, "%06d", inPosY);
+    hashString += zStr;
+
+    return hashString;
 }

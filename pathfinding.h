@@ -1,8 +1,5 @@
-#ifndef INCLUDE_PATHFINDING
-#define INCLUDE_PATHFINDING
+#pragma once
 
 #include "node.h"
 
 void findPath(AANode* inStartNode, AANode* inEndNode);
-
-#endif

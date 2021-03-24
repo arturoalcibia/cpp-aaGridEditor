@@ -10,14 +10,11 @@
 
 void findPath(AANode* inStartNode, AANode* inEndNode) {
 
-    //todo: move to header ?
-    AANode* startNode = inStartNode;
-    AANode* endNode = inEndNode;
 
     std::vector<AANode*> openNodes;
     std::vector<AANode*> closedNodes;
 
-    openNodes.push_back( startNode );
+    openNodes.push_back( inStartNode );
 
     while ( !openNodes.empty() ) {
         AANode *currentNode = openNodes.at(0);
@@ -28,7 +25,7 @@ void findPath(AANode* inStartNode, AANode* inEndNode) {
             AANode *newNode = openNodes[i];
 
             //todo: can be replaced w iterator.
-            if ( newNode->getFCost() <= currentNode->getFCost() || newNode->getHCost() <= currentNode->getHCost() )
+            if ( newNode->getFCost() <= currentNode->getFCost() && newNode->getHCost() < currentNode->getHCost() )
             {
                 currentNode = newNode;
                 currentIndex = i;
@@ -38,8 +35,9 @@ void findPath(AANode* inStartNode, AANode* inEndNode) {
         openNodes.erase(openNodes.begin() + currentIndex);
         closedNodes.push_back(currentNode);
 
-        if (currentNode == endNode) {
-            AANode* nextNode = endNode->parentNode;
+        if (currentNode == inEndNode) {
+
+            AANode* nextNode = inEndNode->parentNode;
 
             while (nextNode != NULL)
             {
@@ -61,17 +59,18 @@ void findPath(AANode* inStartNode, AANode* inEndNode) {
             if (std::find(closedNodes.begin(), closedNodes.end(), neighbourNode) != closedNodes.end())
                 continue;
 
-            int newCostToNeighbour = currentNode->getGCost() + currentNode->distanceTo( neighbourNode );
+            int newCostToNeighbour = currentNode->getGCost() + currentNode->distanceTo( *neighbourNode );
 
             if ( newCostToNeighbour < neighbourNode->getGCost() ||
                  (std::find(openNodes.begin(), openNodes.end(), neighbourNode) == openNodes.end())){
 
                 neighbourNode->setGCost( newCostToNeighbour );
-                neighbourNode->setHCost( neighbourNode->distanceTo( endNode ) );
+                neighbourNode->setHCost( neighbourNode->distanceTo( *inEndNode ) );
                 neighbourNode->parentNode = currentNode;
 
-                if (std::find(openNodes.begin(), openNodes.end(), neighbourNode) == openNodes.end())
+                if (std::find(openNodes.begin(), openNodes.end(), neighbourNode) == openNodes.end()){
                     openNodes.push_back( neighbourNode );
+                }
             }
         }
     }

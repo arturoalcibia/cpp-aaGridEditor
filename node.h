@@ -2,6 +2,7 @@
 #define INCLUDE_NODE
 
 #include <unordered_map>
+#include <string>
 
 #include <QtGui>
 #include <QtWidgets/QGraphicsItem>
@@ -35,8 +36,6 @@ public:
     // constructor
     AANode(int inPosX, int inPosY, int inGridSize);
 
-    bool operator==(const AANode* inOtherNode) const;
-
     // TODO: order declaring
     int posX;
     int posY;
@@ -51,9 +50,7 @@ public:
 
     void setCurrentState(STATES newState);
 
-    int distanceTo(AANode* otherAANode);
-
-    size_t getHashCode() const;
+    int distanceTo(AANode& otherAANode);
 
     int getFCost();
 
@@ -77,6 +74,10 @@ public:
 
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget);
 
+    std::string hashCode();
+
+    static std::string hashCode(int inPosX, int inPosY);
+
 private:
 
     STATES currentState;
@@ -87,10 +88,3 @@ private:
     QPen qPen;
 
 };
-
-class _NodeHasher{
-public:
-    size_t operator()(const AANode& inOtherNode) const;
-};
-
-#endif

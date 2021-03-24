@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 #include <vector>
 
 #include <QDebug>
@@ -28,9 +29,9 @@ AAGrid::AAGrid() {
 
     this->scene()->setSceneRect(0, 0, WIDTH, HEIGHT);
 
-    for (int x = currentScene->sceneRect().left(); x <= currentScene->sceneRect().right(); x = x + NODE_SIZE)
+    for (int x = currentScene->sceneRect().left(); x < currentScene->sceneRect().right(); x = x + NODE_SIZE)
     {
-        for (int y = currentScene->sceneRect().top(); y <= currentScene->sceneRect().bottom(); y = y + NODE_SIZE)
+        for (int y = currentScene->sceneRect().top(); y < currentScene->sceneRect().bottom(); y = y + NODE_SIZE)
         {
             AAGrid::createNode(x, y, NODE_SIZE);
         }
@@ -43,9 +44,9 @@ AAGrid::AAGrid() {
 
 void AAGrid::createNode(int inPosX, int inPosY, int inGridSize)
 {
-    AANode* aaNode = new AANode(inPosX, inPosY, inGridSize);
+    auto* aaNode = new AANode(inPosX, inPosY, inGridSize);
 	scene()->addItem( aaNode );
-    hashesNodeMapping.insert({aaNode->getHashCode(), aaNode});
+    hashesNodeMapping.insert({aaNode->hashCode(), aaNode});
 }
 
 void AAGrid::setGoalNode(AANode *inNode) {
@@ -76,17 +77,13 @@ void AAGrid::setNeighbours(AANode* inNode) {
             int neighbourX = inNode->posX + (x * NODE_SIZE);
             int neighbourY = inNode->posY + (y * NODE_SIZE);
 
-            //todo: move to own fn
-            std::string hashString = std::to_string(neighbourX) + std::to_string(neighbourY);
-            size_t neighbourHashCode = (size_t)std::stoi( hashString );
-
-            auto nodeIterator = hashesNodeMapping.find(neighbourHashCode);
+            std::string hashString = AANode::hashCode(neighbourX, neighbourY);
+            auto nodeIterator = hashesNodeMapping.find(hashString);
 
             if(nodeIterator == hashesNodeMapping.end())
                 continue;
 
             AANode* neighbourNode = nodeIterator->second;
-
             neighbourNodes.push_back(neighbourNode);
         }
     }
